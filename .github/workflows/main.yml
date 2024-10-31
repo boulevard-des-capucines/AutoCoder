@@ -2,7 +2,7 @@ name: issue_info_workflow
 
 on: 
   issues:
-    type: [ opened, reopened ]
+    types: [ opened, reopened ]
 
 jobs:
   
