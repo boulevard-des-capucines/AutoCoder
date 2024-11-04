@@ -6,24 +6,31 @@ on:
 
 jobs:
   
-  access_issue_info: 
+  autocoder-bot: 
+    
     runs-on: ubuntu-latest
+    env:
+          GITHUB_TOKEN: ${{ secrets.CI_TOCKEN_AUTOCODER }}
+          REPOSITORY: ${{ github.repository }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_ASSIGNEES: ${{ join(github.event.issue.assignees.*.login, ', ') }}
+          ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ', ') }}
     
     steps:
       
-      - name: Checkout repo
+      - name: Checkout Repo
         uses: actions/checkout@v4
       
-      - name: Print Issue Information
-        env:
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
-          ISSUE_ASSIGNEES: ${{ join(github.event.issue.assignees.*.login, ', ') }}
-          ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ', ') }}
+      - name: Generate Code with ChatGPT
+        if: contains( ${{ env.ISSUE_LABELS }}, 'autocoder-bot')
         run: |
-          echo "Issue Number: ${ISSUE_NUMBER}"
-          echo "Issue Title: ${ISSUE_TITLE}"
-          echo "Issue Body: ${ISSUE_BODY}"
-          echo "Issue Assignees: ${ISSUE_ASSIGNeES}"
-          echo "Issue Labels: ${ISSUE_LABELS}"
+          echo "Issue #${{ env.ISSUE_NUMBER }}: '${{ env.ISSUE_TITLE }}'."
+          echo "Labels: ${{ env.ISSUE_LABELS }}"
+          echo "Assignees: ${{ env.ISSUE_ASSIGNEES }}"
+          chmod +x ./scripts/script.sh
+          ./scripts/script.sh ${{ env.GITHUB_TOKEN }} ${{ env.REPOSITORY }} ${{ env.ISSUE_NUMBER }} ${{ env.OPENAI_API_KEY }}
+
+      - name: Upload Artifacts
+        
