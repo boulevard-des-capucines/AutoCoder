@@ -31,7 +31,7 @@ jobs:
           echo "Assignees: ${{ env.ISSUE_ASSIGNEES }}"
           echo "Actions Repo Name: ${{ env.REPOSITORY }}"
           chmod +x ./scripts/script.sh
-          bash ./scripts/script.sh ${{ env.GITHUB_TOKEN }} ${{ env.REPOSITORY }} ${{ env.ISSUE_NUMBER }} ${{ env.OPENAI_API_KEY }}
+          ./scripts/script.sh ${{ env.GITHUB_TOKEN }} ${{ env.REPOSITORY }} ${{ env.ISSUE_NUMBER }} ${{ env.OPENAI_API_KEY }}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
