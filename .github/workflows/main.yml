@@ -33,4 +33,11 @@ jobs:
           ./scripts/script.sh ${{ env.GITHUB_TOKEN }} ${{ env.REPOSITORY }} ${{ env.ISSUE_NUMBER }} ${{ env.OPENAI_API_KEY }}
 
       - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: autocoder-artifact    # Name of the artifact
+          path: .
+      
+      - name: Display Generated Code using the ls command
+        run: ls -R autocoder-artifact | cat
         
