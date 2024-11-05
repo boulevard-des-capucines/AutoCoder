@@ -30,7 +30,7 @@ jobs:
           echo "Labels: ${{ env.ISSUE_LABELS }}"
           echo "Assignees: ${{ env.ISSUE_ASSIGNEES }}"
           chmod +x ./scripts/script.sh
-          ./scripts/script.sh ${{ env.GITHUB_TOKEN }} ${{ env.REPOSITORY }} ${{ env.ISSUE_NUMBER }} ${{ env.OPENAI_API_KEY }}
+          bash ./scripts/script.sh ${{ env.GITHUB_TOKEN }} ${{ env.REPOSITORY }} ${{ env.ISSUE_NUMBER }} ${{ env.OPENAI_API_KEY }}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
