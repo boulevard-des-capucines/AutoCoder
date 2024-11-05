@@ -11,14 +11,14 @@ OPENAI_API_KEY="$4"
 
 # Function to fetch issue details from GitHub API
 fetch_issue_details() {
-    echo "fetch_issue_details..."
+    echo "fetch_issue_details..." >&2
     curl -s -H "Authorization: token $GITHUB_TOKEN" \
          "https://api.github.com/repos/$REPOSITORY/issues/$ISSUE_NUMBER"
 }
 
 # Function to send prompt to the ChatGPT model (OpenAI API)
 send_prompt_to_chatgpt() {
-  echo "send_prompt_to_chatgpt..."
+  echo "send_prompt_to_chatgpt...">&2
 curl -s -X POST "https://api.openai.com/v1/chat/completions" \
     -H "Authorization: Bearer $OPENAI_API_KEY" \
     -H "Content-Type: application/json" \
@@ -32,20 +32,22 @@ save_to_file() {
     local filename="autocoder-bot/$1"
     local code_snippet="$2"
 
-    echo "save_to_file ${filename}..."
-    echo "code_snippet: \n\n'''\n${code_snippet}\n'''"
+    echo "save_to_file ${filename}..." >&2
+    echo "code_snippet: \n\n'''\n${code_snippet}\n'''" >&2
 
     mkdir -p "$(dirname "$filename")"
     echo -e "$code_snippet" > "$filename"
-    echo "The code has been written to $filename"
+    echo "The code has been written to $filename" >&2
 }
 
 # Fetch and process issue details
 RESPONSE=$(fetch_issue_details)
+
+
 ISSUE_BODY=$(echo "$RESPONSE" | jq -r .body)
 
 if [[ -z "$ISSUE_BODY" ]]; then
-    echo 'Issue body is empty or not found in the response.'
+    echo 'Issue body is empty or not found in the response.' >&2
     exit 1
 fi
 
@@ -62,7 +64,7 @@ MESSAGES_JSON=$(jq -n --arg body "$FULL_PROMPT" '[{"role": "user", "content": $b
 RESPONSE=$(send_prompt_to_chatgpt)
 
 if [[ -z "$RESPONSE" ]]; then
-    echo "No response received from the OpenAI API."
+    echo "No response received from the OpenAI API." >&2
     exit 1
 fi
 
@@ -71,7 +73,7 @@ fi
 FILES_JSON=$(echo "$RESPONSE" | jq -e '.choices[0].message.content | fromjson' 2> /dev/null)
 
 if [[ -z "$FILES_JSON" ]]; then
-    echo "No valid JSON dictionary found in the response or the response was not valid JSON. Please rerun the job."
+    echo "No valid JSON dictionary found in the response or the response was not valid JSON. Please rerun the job." >&2
     exit 1
 fi
 
