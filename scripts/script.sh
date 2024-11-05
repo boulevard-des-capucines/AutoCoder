@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 
 # Exit immediately if a command exits with a non-zero status.
 set -e
@@ -11,12 +11,14 @@ OPENAI_API_KEY="$4"
 
 # Function to fetch issue details from GitHub API
 fetch_issue_details() {
+    echo "fetch_issue_details..."
     curl -s -H "Authorization: token $GITHUB_TOKEN" \
          "https://api.github.com/repos/$REPOSITORY/issues/$ISSUE_NUMBER"
 }
 
 # Function to send prompt to the ChatGPT model (OpenAI API)
 send_prompt_to_chatgpt() {
+  echo "send_prompt_to_chatgpt..."
 curl -s -X POST "https://api.openai.com/v1/chat/completions" \
     -H "Authorization: Bearer $OPENAI_API_KEY" \
     -H "Content-Type: application/json" \
@@ -29,6 +31,9 @@ save_to_file() {
     #  the script will save the code snippets to files in a directory named "autocoder-bot" with the filename specified in the JSON object.
     local filename="autocoder-bot/$1"
     local code_snippet="$2"
+
+    echo "save_to_file ${filename}..."
+    echo "code_snippet: \n\n'''\n${code_snippet}\n'''"
 
     mkdir -p "$(dirname "$filename")"
     echo -e "$code_snippet" > "$filename"
