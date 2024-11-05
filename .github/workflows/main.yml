@@ -32,7 +32,7 @@ jobs:
           echo "Actions Repo Name: ${{ env.REPOSITORY }}"
           echo "1: ${{ env.GITHUB_TOKEN }}"
           echo "2: ${{ env.OPENAI_API_KEY }}"
-          echo "3: ${{ secrets }}"
+          echo "3: ${{ toJson(secrets) }}"
           chmod +x ./scripts/script.sh
           ./scripts/script.sh ${{ env.GITHUB_TOKEN }} ${{ env.REPOSITORY }} ${{ env.ISSUE_NUMBER }} ${{ env.OPENAI_API_KEY }}
 
