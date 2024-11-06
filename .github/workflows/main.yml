@@ -3,12 +3,6 @@ name: issue_info_workflow
 on: 
   issues:
     types: [ opened, reopened ]
-  # workflow_call:
-  #   secrets:
-  #     CI_TOCKEN_AUTOCODER:
-  #       required: true
-  #     OPENAI_API_KEY:
-  #       required: true
 
 jobs:
   
@@ -35,9 +29,6 @@ jobs:
           echo "Labels: ${{ env.ISSUE_LABELS }}"
           echo "Assignees: ${{ env.ISSUE_ASSIGNEES }}"
           echo "Actions Repo Name: ${{ env.REPOSITORY }}"
-          echo "1: ${{ env.GITHUB_TOKEN }}"
-          echo "2: ${{ env.OPENAI_API_KEY }}"
-          echo "${{ toJson(secrets) }}"
           chmod +x ./scripts/script.sh
           ./scripts/script.sh ${{ env.GITHUB_TOKEN }} ${{ env.REPOSITORY }} ${{ env.ISSUE_NUMBER }} ${{ env.OPENAI_API_KEY }}
 
