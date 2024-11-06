@@ -3,6 +3,12 @@ name: issue_info_workflow
 on: 
   issues:
     types: [ opened, reopened ]
+  workflow_call:
+    secrets:
+      CI_TOCKEN_AUTOCODER:
+        required: true
+      OPENAI_API_KEY:
+        required: true
 
 jobs:
   
