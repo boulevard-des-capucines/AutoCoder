@@ -9,7 +9,7 @@ jobs:
   autocoder-bot: 
     
     runs-on: ubuntu-latest
-    if: contains( ${{ join(github.event.issue.labels.*.name, ', ') }}, 'autocoder-bot')
+    if: contains( join(github.event.issue.labels.*.name, 'autocoder-bot')
     
     steps:
       
