@@ -9,14 +9,13 @@ jobs:
   autocoder-bot: 
     
     runs-on: ubuntu-latest
-    if: contains( ${{ join(github.event.issue.labels.*.name, ', ') }}, 'autocoder-bot')
-    
     steps:
       
       - name: Checkout Repo
         uses: actions/checkout@v4
       
       - name: Generate Code with ChatGPT
+        if: contains( ${{ join(github.event.issue.labels.*.name, ', ') }}, 'autocoder-bot')
         env:
           GITHUB_TOKEN: ${{ secrets.CI_TOCKEN_AUTOCODER }}
           REPOSITORY: ${{ github.repository }}
