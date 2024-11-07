@@ -9,9 +9,6 @@ REPOSITORY="$2"
 ISSUE_NUMBER="$3"
 OPENAI_API_KEY="$4"
 
-echo "REPOSITORY: $REPOSITORY    ISSUE_NUMBER: $ISSUE_NUMBER"
-echo "Script: $0\n$1\n$2\n$3\n$4"
-
 # Function to fetch issue details from GitHub API
 fetch_issue_details() {
     echo "fetch_issue_details..." >&2
