@@ -39,6 +39,12 @@ jobs:
           name: autocoder-artifact    # Name of the artifact
           path: .
       
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: autocoder-artifact    # Name of the artifact
+          path: ./autocoder-artifact
+      
       - name: Display Generated Code using the ls command
-        run: ls -R autocoder-artifact | cat
+        run: ls -R ./autocoder-artifact | cat
         
