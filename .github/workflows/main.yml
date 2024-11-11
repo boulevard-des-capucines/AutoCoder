@@ -9,7 +9,7 @@ jobs:
   autocoder-bot: 
     
     runs-on: ubuntu-latest
-    if: contains( ${{ join(github.event.issue.labels.*.name, ', ') }}, 'autocoder-bot')
+    if: ${{ github.event.label.name == 'autocoder-bot' }}
     
     steps:
       
@@ -25,7 +25,7 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_ASSIGNEES: ${{ join(github.event.issue.assignees.*.login, ', ') }}
-          ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ', ') }}
+          ISSUE_LABELS: ${{ github.event.label.name == 'autocoder-bot' }}
         run: |
           echo "Issue #${{ env.ISSUE_NUMBER }}: '${{ env.ISSUE_TITLE }}'."
           echo "Labels: ${{ env.ISSUE_LABELS }}"
