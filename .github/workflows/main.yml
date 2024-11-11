@@ -9,7 +9,7 @@ jobs:
   autocoder-bot: 
     
     runs-on: ubuntu-latest
-    if: ${{ github.event.label.name == 'autocoder-bot' }}
+    if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
     
     steps:
       
@@ -17,7 +17,6 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Generate Code with ChatGPT
-        if: contains( ${{ join(github.event.issue.labels.*.name, ', ') }}, 'autocoder-bot')
         env:
           GITHUB_TOKEN: ${{ secrets.CI_TOCKEN_AUTOCODER }}
           REPOSITORY: ${{ github.repository }}
@@ -25,7 +24,7 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_ASSIGNEES: ${{ join(github.event.issue.assignees.*.login, ', ') }}
-          ISSUE_LABELS: ${{ github.event.label.name == 'autocoder-bot' }}
+          ISSUE_LABELS: ${{ github.event.issue.labels.*.name }}
         run: |
           echo "Issue #${{ env.ISSUE_NUMBER }}: '${{ env.ISSUE_TITLE }}'."
           echo "Labels: ${{ env.ISSUE_LABELS }}"
